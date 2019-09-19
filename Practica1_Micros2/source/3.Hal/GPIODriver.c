@@ -3,7 +3,8 @@
 #include <3.Hal/GPIODriver.h>
 #include "MKL25Z4.h"
 
-void DElAY(void);
+void DElAY(void); //Esta funcion sera eliminada, solo fue de prueba
+
 
 void GPIO_vfnDriverInit (void){
 	SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;
@@ -38,17 +39,17 @@ void GPIO_vfnDriverInit (void){
 	GPIOC->PSOR|=(1<<enSegB);
 	GPIOC->PSOR|=(1<<enSegC);
 	GPIOC->PSOR|=(1<<enSegD);
-	//GPIOC->PSOR|=(1<<enSegE);
-	//GPIOC->PSOR|=(1<<enSegF);
+	GPIOC->PSOR|=(1<<enSegE);
+	GPIOC->PSOR|=(1<<enSegF);
 	GPIOC->PSOR|=(1<<enSegG);
 }
 
 
 
 void GPIO_vfnShiftDispl(uint8 *u8DispFlag, uint8 *u8DispVal){
-		GPIOC->PCOR|=127;
+		GPIOC->PCOR|=127; 	//Esto apaga todos los leds. Igual sera una macro
 		GPIOC->PSOR|=*u8DispVal;
-		GPIOC->PSOR|=(15<<enDis1);
+		GPIOC->PSOR|=(15<<enDis1);	//El 15 apaga los leds y luego prende el indicado
 		GPIOC->PCOR|=((*u8DispFlag)<<enDis1);
 }
 
