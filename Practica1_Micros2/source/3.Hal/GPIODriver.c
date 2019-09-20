@@ -24,6 +24,8 @@ void GPIO_vfnDriverInit (void){
 	PORTC->PCR[enDis2]|=ActGPIO;
 	PORTC->PCR[enDis3]|=ActGPIO;
 	PORTC->PCR[enDis4]|=ActGPIO;
+
+	//configuracion de los pines de entrada como GPios
 	PORTE->PCR[Left]|=ActGPIO;
 	PORTE->PCR[Right]|=ActGPIO;
 	PORTE->PCR[Up]|=ActGPIO;
@@ -50,6 +52,14 @@ void GPIO_vfnDriverInit (void){
 	GPIOC->PSOR|=(1<<enSegE);
 	GPIOC->PSOR|=(1<<enSegF);
 	GPIOC->PSOR|=(1<<enSegG);
+
+	//configuracion de los pines de entradas digitales
+	/*GPIOE->PDIR|=(1<<Left);
+	GPIOE->PDIR|=(1<<Right);
+	GPIOE->PDIR|=(1<<Up);
+	GPIOE->PDIR|=(1<<Down);
+	GPIOE->PDIR|=(1<<Conf);
+	GPIOE->PDIR|=(1<<Start);*/
 }
 
 
