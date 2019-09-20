@@ -1,7 +1,9 @@
 
 
 #include <3.Hal/GPIODriver.h>
+#include <Debouncer.h>
 #include "MKL25Z4.h"
+
 
 void DElAY(void); //Esta funcion sera eliminada, solo fue de prueba
 
@@ -22,6 +24,12 @@ void GPIO_vfnDriverInit (void){
 	PORTC->PCR[enDis2]|=ActGPIO;
 	PORTC->PCR[enDis3]|=ActGPIO;
 	PORTC->PCR[enDis4]|=ActGPIO;
+	PORTE->PCR[Left]|=ActGPIO;
+	PORTE->PCR[Right]|=ActGPIO;
+	PORTE->PCR[Up]|=ActGPIO;
+	PORTE->PCR[Down]|=ActGPIO;
+	PORTE->PCR[Conf]|=ActGPIO;
+	PORTE->PCR[Start]|=ActGPIO;
 
 	GPIOC->PDDR|=(1<<enSegA);
 	GPIOC->PDDR|=(1<<enSegB);
