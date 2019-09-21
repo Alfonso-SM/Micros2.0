@@ -20,6 +20,7 @@ void GPIO_vfnDriverInit (void){
 	PORTC->PCR[enSegE]|=ActGPIO;
 	PORTC->PCR[enSegF]|=ActGPIO;
 	PORTC->PCR[enSegG]|=ActGPIO;
+	PORTC->PCR[enDP]|=ActGPIO;
 	PORTC->PCR[enDis1]|=ActGPIO;
 	PORTC->PCR[enDis2]|=ActGPIO;
 	PORTC->PCR[enDis3]|=ActGPIO;
@@ -40,10 +41,12 @@ void GPIO_vfnDriverInit (void){
 	GPIOC->PDDR|=(1<<enSegE);
 	GPIOC->PDDR|=(1<<enSegF);
 	GPIOC->PDDR|=(1<<enSegG);
+	GPIOC->PDDR|=(1<<enDP);
 	GPIOC->PDDR|=(1<<enDis1);
 	GPIOC->PDDR|=(1<<enDis2);
 	GPIOC->PDDR|=(1<<enDis3);
 	GPIOC->PDDR|=(1<<enDis4);
+	GPIOC->PDDR|=(0<<Left);
 
 	GPIOC->PSOR|=(1<<enSegA);
 	GPIOC->PSOR|=(1<<enSegB);
@@ -69,6 +72,11 @@ void GPIO_vfnShiftDispl(uint8 *u8DispFlag, uint8 *u8DispVal){
 		GPIOC->PSOR|=*u8DispVal;
 		GPIOC->PSOR|=(15<<enDis1);	//El 15 apaga los leds y luego prende el indicado
 		GPIOC->PCOR|=((*u8DispFlag)<<enDis1);
+		if(*u8DispFlag==4){
+			GPIOC->PSOR|=(1<<enDP);
+		}else{
+			GPIOC->PCOR|=(1<<enDP);
+		}
 }
 
 void GPIO_vfnLEDriverInit(void){
