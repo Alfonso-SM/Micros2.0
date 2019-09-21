@@ -26,6 +26,7 @@ typedef enum{
 }tenMySgmnts;
 
 #define ActGPIO 	256
+#define ActGPIO_PullDown 258
 #define Blue_LDB	1
 #define Blue 		(1<<1)
 
