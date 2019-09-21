@@ -18,7 +18,7 @@ typedef enum{
 	enSegE,
 	enSegF,
 	enSegG,
-	enTotalSeg,
+	enDP,
 	enDis1,
 	enDis2,
 	enDis3,
