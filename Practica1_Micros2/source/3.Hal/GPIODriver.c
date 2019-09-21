@@ -1,7 +1,7 @@
 
 
 #include <3.Hal/GPIODriver.h>
-#include <Debouncer.h>
+#include "Debouncer.h"
 #include "MKL25Z4.h"
 
 
@@ -26,13 +26,13 @@ void GPIO_vfnDriverInit (void){
 	PORTC->PCR[enDis3]|=ActGPIO;
 	PORTC->PCR[enDis4]|=ActGPIO;
 
-	//configuracion de los pines de entrada como GPios
-	PORTE->PCR[Left]|=ActGPIO;
-	PORTE->PCR[Right]|=ActGPIO;
-	PORTE->PCR[Up]|=ActGPIO;
-	PORTE->PCR[Down]|=ActGPIO;
-	PORTE->PCR[Conf]|=ActGPIO;
-	PORTE->PCR[Start]|=ActGPIO;
+	//configuracion de los pines de entrada como GPios con resistencia pull down
+	PORTE->PCR[Left]|=ActGPIO_PullDown;
+	PORTE->PCR[Right]|=ActGPIO_PullDown;
+	PORTE->PCR[Up]|=ActGPIO_PullDown;
+	PORTE->PCR[Down]|=ActGPIO_PullDown;
+	PORTE->PCR[Conf]|=ActGPIO_PullDown;
+	PORTE->PCR[Start]|=ActGPIO_PullDown;
 
 	GPIOC->PDDR|=(1<<enSegA);
 	GPIOC->PDDR|=(1<<enSegB);
@@ -56,13 +56,7 @@ void GPIO_vfnDriverInit (void){
 	GPIOC->PSOR|=(1<<enSegF);
 	GPIOC->PSOR|=(1<<enSegG);
 
-	//configuracion de los pines de entradas digitales
-	/*GPIOE->PDIR|=(1<<Left);
-	GPIOE->PDIR|=(1<<Right);
-	GPIOE->PDIR|=(1<<Up);
-	GPIOE->PDIR|=(1<<Down);
-	GPIOE->PDIR|=(1<<Conf);
-	GPIOE->PDIR|=(1<<Start);*/
+
 }
 
 

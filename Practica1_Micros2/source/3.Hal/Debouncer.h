@@ -7,10 +7,12 @@
 
 #ifndef DEBOUNCER_H_
 #define DEBOUNCER_H_
-typedef char uint_8 ;
+typedef unsigned char uint_8 ;
+typedef unsigned long uint_32;
+
+uint_32 fnDbncr(uint_32 Value);
 
 typedef struct{
-	uint_8 Port;
 	uint_8 Pin;
 	uint_8 LastStableState;
 	uint_8 u8Shots[3];
