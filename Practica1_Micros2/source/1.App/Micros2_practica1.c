@@ -33,6 +33,7 @@ int main(void){
 				u32Returnfun=fnDbncr(u32Pin);
 				if(u32Returnfun|=Conf){
 					if(u32Returnfun|=Left){
+						Control++;
 						if(u8DsplyOn==8){
 							u8DsplyOn=1;
 							pu8Pointer=&au8CountersValues[0];
@@ -44,6 +45,7 @@ int main(void){
 					}
 									}
 					else if(u32Returnfun|=Right){
+						Control--;
 						if(u8DsplyOn==8){
 							u8DsplyOn=1;
 							pu8Pointer=&au8CountersValues[0];
