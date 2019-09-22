@@ -46,5 +46,6 @@ void Shift_vfnDecode(uint8 *u8DeciVal,uint8 *u8SlcDsply){
 		u8DecoVal=Error;
 		break;
 	}
-	GPIO_vfnShiftDispl(u8SlcDsply, &u8DecoVal);
+	GPIO_vfnSetVal(&u8DecoVal);
+	GPIO_vfnSetDisplay(u8SlcDsply);
 }

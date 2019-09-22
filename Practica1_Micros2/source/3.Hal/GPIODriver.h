@@ -33,7 +33,8 @@ typedef enum{
 
 void GPIO_vfnDriverInit (void);
 void GPIO_vfnShiftDispl(uint8 *u8DispFlag, uint8 *u8DispVal);
-void GPIO_vfnDeco(uint8 u8DispVal);
+void GPIO_vfnSetVal(uint8 *u8DispVal);
+void GPIO_vfnSetDisplay(uint8 *u8DispFlag);
 void GPIO_vfnLEDriverInit(void);
 void GPIO_vfnToggleLEd(void);
 

@@ -5,9 +5,6 @@
 #include "MKL25Z4.h"
 
 
-void DElAY(void); //Esta funcion sera eliminada, solo fue de prueba
-
-
 void GPIO_vfnDriverInit (void){
 	SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;
 	SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;
@@ -26,13 +23,12 @@ void GPIO_vfnDriverInit (void){
 	PORTC->PCR[enDis3]|=ActGPIO;
 	PORTC->PCR[enDis4]|=ActGPIO;
 
-	//configuracion de los pines de entrada como GPios con resistencia pull down
-	PORTE->PCR[Left]|=ActGPIO_PullDown;
-	PORTE->PCR[Right]|=ActGPIO_PullDown;
-	PORTE->PCR[Up]|=ActGPIO_PullDown;
-	PORTE->PCR[Down]|=ActGPIO_PullDown;
-	PORTE->PCR[Conf]|=ActGPIO_PullDown;
-	PORTE->PCR[Start]|=ActGPIO_PullDown;
+	PORTE->PCR[Left]=ActGPIO_PullDown;
+	PORTE->PCR[Right]=ActGPIO_PullDown;
+	PORTE->PCR[Up]=ActGPIO_PullDown;
+	PORTE->PCR[Down]=ActGPIO_PullDown;
+	PORTE->PCR[Conf]=ActGPIO_PullDown;
+	PORTE->PCR[Start]=ActGPIO_PullDown;
 
 	GPIOC->PDDR|=(1<<enSegA);
 	GPIOC->PDDR|=(1<<enSegB);
@@ -46,7 +42,7 @@ void GPIO_vfnDriverInit (void){
 	GPIOC->PDDR|=(1<<enDis2);
 	GPIOC->PDDR|=(1<<enDis3);
 	GPIOC->PDDR|=(1<<enDis4);
-	GPIOC->PDDR|=(0<<Left);
+
 
 	GPIOC->PSOR|=(1<<enSegA);
 	GPIOC->PSOR|=(1<<enSegB);
@@ -73,6 +69,19 @@ void GPIO_vfnShiftDispl(uint8 *u8DispFlag, uint8 *u8DispVal){
 		}
 }
 
+void GPIO_vfnSetVal(uint8 *u8DispVal){
+	GPIOC->PCOR|=127; 	//Esto apaga todos los leds. Igual sera una macro
+	GPIOC->PSOR|=*u8DispVal;
+}
+void GPIO_vfnSetDisplay(uint8 *u8DispFlag){
+	GPIOC->PSOR|=(15<<enDis1);	//El 15 apaga los leds y luego prende el indicado
+	GPIOC->PCOR|=((*u8DispFlag)<<enDis1);
+	if(*u8DispFlag==4){
+		GPIOC->PSOR|=(1<<enDP);
+	}else{
+		GPIOC->PCOR|=(1<<enDP);
+	}
+}
 void GPIO_vfnLEDriverInit(void){
 	SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;
 	PORTD->PCR[Blue_LDB]|=ActGPIO;
@@ -84,11 +93,5 @@ void GPIO_vfnToggleLEd(void){
 	GPIOD->PTOR=Blue;
 }
 
-void DELAY (void){
-	uint8 de=255;
-	while(de){
-		de--;
-	}
-}
 
 
