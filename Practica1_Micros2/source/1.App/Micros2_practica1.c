@@ -76,6 +76,14 @@ int main(void){
 						vfnTMR();
 				}
 			}else{
+				if(u8DsplyOn==8){
+					u8DsplyOn=1;
+					pu8Pointer=&au8CountersValues[0];
+					}else{
+					u8DsplyOn=u8DsplyOn<<1;
+					pu8Pointer++;
+					}
+					Shift_vfnDecode(pu8Pointer,&u8DsplyOn); //esta funcion si va ir
 				u8_20mS=0;
 			}
 			// Hasta aqui
@@ -93,6 +101,7 @@ void vfnWhile(void){
 }
 
 void vfnTMR(void){
+	while((au8CountersValues[0]&au8CountersValues[1]&au8CountersValues[2]&au8CountersValues[3])!=0){
 	vfnWhile();
 	u8Seg++;
 	if(u8Seg==400){
@@ -126,5 +135,6 @@ void vfnTMR(void){
 				}
 				Shift_vfnDecode(pu8Pointer,&u8DsplyOn); //esta funcion si va ir
 			}
+	}
 }
 
