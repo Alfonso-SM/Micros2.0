@@ -33,7 +33,7 @@ int main(void){
 				u32Returnfun=fnDbncr(u32Pin);
 				if(u32Returnfun&(1<<Conf)){
 					u8DsplyOn=1;
-					uint8 *pu8Pointer=&au8CountersValues[0];
+					pu8Pointer=&au8CountersValues[0];
 					Shift_vfnDecode(pu8Pointer,&u8DsplyOn);
 					if(u32Returnfun&(1<<Left)){
 						Control++;
