@@ -1,84 +1,77 @@
 
-#include "MKL25Z4.h"
+#include "Micros2_practica1.h"
 #include "GPIODriver.h"
-#include "ShiftDriver.h"
 #include "Debouncer.h"
-//Esto se va a comodar despues
+#include "Timer.h"
+
 typedef unsigned short uint16;
-#define idle 0
-#define Configuration 1
-#define Run 2
-void vfnWhile(void);
-void vfnTMR(void);
-static uint16 u16Clk=4062;
+
+void vfnRun_Check(void);
+
+static uint16 u16Clk=ClkVal;
 uint16 u8Seg=0;	//Esta tal ves la borre
-uint8 au8CountersValues[4]={0,1,3,1};
 uint8  u8_20mS=0;
-uint8 *pu8Pointer=&au8CountersValues[0];
-uint8 u8DsplyOn=1;//Esto tendra un nombre para hacer el siempre jarioso
+uint8 au8Pins2Use[Pins2Use]={Left,Right,Up,Down,Conf,Start};
 uint8 StateMachineVal=0;
-//Hasta aqui
 
 int main(void){
+
 	GPIO_vfnDriverInit();
 	GPIO_vfnLEDriverInit();
+	GPIO_vfnDriverInptsInit(&au8Pins2Use[0],sizeof(au8Pins2Use));
 
 	while(1){
 		vfnWhile();
 		u8Seg++;
 		u8_20mS++;
-		if(u8Seg==400){
-			u8Seg=0;
+		if(u8Seg==OneSeg){
 			GPIO_vfnToggleLEd();
 		}
-		if (StateMachineVal==idle)
-		{
-			//Esto sera una funcion
-			if(u8DsplyOn==8){
-				u8DsplyOn=1;
-				pu8Pointer=&au8CountersValues[0];
+	if (StateMachineVal==idle){
+			Timer_vfnIdle();
+			if (u8_20mS==TriggerBttn){
+				u8_20mS=0;
+				Check_Conf_Bttn();
+				Check_Run_Bttn();
 			}else{
-				u8DsplyOn=u8DsplyOn<<1;
-				pu8Pointer++;
+				/*No Used*/
 			}
-			Shift_vfnDecode(pu8Pointer,&u8DsplyOn);
-			//Hasta aquí
-			if (u8_20mS==8)
+		}
+		else if (StateMachineVal==Configuration){
+			if (u8_20mS==TriggerBttn){
+				u8_20mS=0;
+				Check_Conf_Bttn();
+				Check_Left_Bttn();
+				Check_Right_Bttn();
+				Check_Up_Bttn();
+				Check_Down_Bttn();
+				Check_Run_Bttn();
+			}else{
+				/*No Used*/
+			}
+		}
+		else if (StateMachineVal==Run){
+			if (u8_20mS==TriggerBttn)
 			{
 				u8_20mS=0;
-				/*Check_Conf_Bttn();
-				Check_Conf_Run();*/
+				Check_Conf_Bttn();
+				Check_Run_Bttn();
+			}else{
+				/*No used*/
+			}
+			if((u8Seg==OneSeg)&&(StateMachineVal==Run)){
+				vfnTMR();
+				vfnRun_Check();
 			}else{
 				/*No Used*/
 			}
+			Timer_vfnIdle();
 		}
-		else if (StateMachineVal==Configuration)
-		{
-			if (u8_20mS==8){
-				u8_20mS=0;
-				/*Check_Conf_Bttn();
-				Check_Conf_Run();
-				Check_Conf_Left();
-				Check_Conf_Right();
-				Check_Conf_Up();
-				Check_Conf_Down();*/
-			}else{
-				/*No Used*/
-			}
+		if(u8Seg==OneSeg){
+			u8Seg=0;
+		}else{
+			/*No used*/
 		}
-		else if (StateMachineVal==Run)
-		{
-			if (u8_20mS==8)
-			{
-				u8_20mS=0;
-				/*Check_Conf_Bttn();
-				Check_Conf_Run();*/
-			}else{
-				/*No Used*/
-			}
-			vfnTMR();
-		}
-
 	}
 	return 0;
 }
@@ -88,43 +81,30 @@ void vfnWhile(void){
 	while(u16Clk){
 		u16Clk--;
 	}
-	u16Clk=4062; //32500 será una macro
+	u16Clk=ClkVal; //32500 será una macro
 }
 
-void vfnTMR(void){
-	while((au8CountersValues[0]&au8CountersValues[1]&au8CountersValues[2]&au8CountersValues[3])!=0){
-	vfnWhile();
-	u8Seg++;
-	if(u8Seg==400){
-				u8Seg=0;
-				GPIO_vfnToggleLEd();
-				au8CountersValues[0]--;
-	if(au8CountersValues[0]==0){
-				au8CountersValues[0]=9;
-				au8CountersValues[1]--;
-			}
-			else if(au8CountersValues[1]==0){
-				au8CountersValues[1]=5;
-				au8CountersValues[2]--;
-			}
-			else if(au8CountersValues[2]==0){
-				au8CountersValues[2]=9;
-				au8CountersValues[3]--;
-			}
-			else if(au8CountersValues[3]==0){
-				au8CountersValues[3]=0;
-			}
-	}
-	else{
-				//Lo que tiene que checar cada 2.5ms.
-				if(u8DsplyOn==8){
-					u8DsplyOn=1;
-					pu8Pointer=&au8CountersValues[0];
-				}else{
-					u8DsplyOn=u8DsplyOn<<1;
-					pu8Pointer++;
-				}
-				Shift_vfnDecode(pu8Pointer,&u8DsplyOn); //esta funcion si va ir
-			}
+void vfnState_Configuracion(void){
+	if(StateMachineVal==Configuration){
+		StateMachineVal=idle;
+	}else{
+		StateMachineVal=Configuration;
 	}
 }
+
+void vfnState_Run(void){
+	if(StateMachineVal==Run){
+		StateMachineVal=idle;
+	}else{
+		vfnRun_Check();
+	}
+}
+
+void vfnRun_Check(void){
+	if(vfnCheckTimer()){
+		StateMachineVal=Run;
+	}else{
+		StateMachineVal=idle;
+	}
+}
+

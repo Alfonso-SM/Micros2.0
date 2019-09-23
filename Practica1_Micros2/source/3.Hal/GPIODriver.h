@@ -10,6 +10,12 @@
 
 typedef unsigned char uint8;
 
+#define TurnOffSeg 		127
+#define TurnOffDisplays 15
+#define Display4On 		8
+#define Display3On 		4
+#define Display1On 		1
+
 typedef enum{
 	enSegA=0,
 	enSegB,
@@ -32,6 +38,8 @@ typedef enum{
 
 
 void GPIO_vfnDriverInit (void);
+void GPIO_vfnDriverInptsInit(uint8 *PinVal, uint8 SizeOfList);
+uint8 GPIO_u8fnReadPin(uint8 Pin2Read);
 void GPIO_vfnShiftDispl(uint8 *u8DispFlag, uint8 *u8DispVal);
 void GPIO_vfnSetVal(uint8 *u8DispVal);
 void GPIO_vfnSetDisplay(uint8 *u8DispFlag);

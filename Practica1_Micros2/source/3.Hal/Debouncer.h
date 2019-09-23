@@ -10,25 +10,36 @@
 typedef unsigned char uint_8 ;
 typedef unsigned long uint_32;
 
-uint_32 fnDbncr(uint_32 Value);
+#define LastValue 2
+#define ShootCapture 3
+
+typedef enum{
+	enPin1=0,
+	enPin2,
+	enPin3,
+	enPin4,
+	enPin5,
+	enPin6,
+	enTotalPins
+}tenPinConf;
 
 typedef struct{
 	uint_8 Pin;
 	uint_8 LastStableState;
-	uint_8 u8Shots[3];
+	uint_8 u8Shots[ShootCapture];
 	uint_8 u8Cntr;
 	uint_8 u8Stablestate ;
-}DbncrInfo;
+}tstDbncrInfo;
 
-typedef enum{
-	Left=20,
-	Right,
-	Up,
-	Down,
-	Conf=29,
-	Start
-}enPinConf;
 
+void DbncrInit(uint_8 PinVal);
+void Dbncr(uint_8 u8Pin2Check);
+void Check_Left_Bttn(void);
+void Check_Right_Bttn(void);
+void Check_Up_Bttn(void);
+void Check_Down_Bttn(void);
+void Check_Conf_Bttn(void);
+void Check_Run_Bttn(void);
 
 
 

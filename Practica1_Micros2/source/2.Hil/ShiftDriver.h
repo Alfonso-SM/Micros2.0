@@ -10,17 +10,17 @@
 
 typedef unsigned char uint8;
 
-#define One 0x6
-#define Two 0x5B
-#define Three 0x4F
-#define Four 0x66
-#define Five 0x6D
-#define Six 0x7D
-#define Seven 0x7
-#define Eight 0x7F
-#define Nine 0x67
-#define Zero 0x3F
-#define Error 0x76
+#define One 	0x6
+#define Two 	0x5B
+#define Three 	0x4F
+#define Four 	0x66
+#define Five 	0x6D
+#define Six 	0x7D
+#define Seven 	0x7
+#define Eight 	0x7F
+#define Nine 	0x67
+#define Zero 	0x3F
+#define Error 	0x76
 
 
 void Shift_vfnDecode(uint8 *u8DecVal,uint8 *u8SlcDsply);
