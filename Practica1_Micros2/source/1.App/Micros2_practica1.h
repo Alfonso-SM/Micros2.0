@@ -12,8 +12,8 @@
 #define Configuration	1
 #define Run 			2
 #define Pins2Use 		6
-#define ClkVal 			4062
-#define OneSeg 			400
+#define ClkVal 			1538
+#define OneSeg 			790
 #define TriggerBttn 	8
 
 typedef enum{

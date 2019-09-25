@@ -9,7 +9,8 @@ typedef unsigned short uint16;
 void vfnRun_Check(void);
 
 static uint16 u16Clk=ClkVal;
-uint16 u8Seg=0;	//Esta tal ves la borre
+uint16 u8Seg=0;
+uint16 u16TimerClk=0;
 uint8  u8_20mS=0;
 uint8 au8Pins2Use[Pins2Use]={Left,Right,Up,Down,Conf,Start};
 uint8 StateMachineVal=0;
@@ -51,6 +52,7 @@ int main(void){
 			}
 		}
 		else if (StateMachineVal==Run){
+			u16TimerClk++;
 			if (u8_20mS==TriggerBttn)
 			{
 				u8_20mS=0;
@@ -59,9 +61,10 @@ int main(void){
 			}else{
 				/*No used*/
 			}
-			if((u8Seg==OneSeg)&&(StateMachineVal==Run)){
+			if((u16TimerClk==OneSeg)&&(StateMachineVal==Run)){
 				vfnTMR();
 				vfnRun_Check();
+				u16TimerClk=0;
 			}else{
 				/*No Used*/
 			}
@@ -103,6 +106,7 @@ void vfnState_Run(void){
 void vfnRun_Check(void){
 	if(vfnCheckTimer()){
 		StateMachineVal=Run;
+		u16TimerClk=0;
 	}else{
 		StateMachineVal=idle;
 	}
