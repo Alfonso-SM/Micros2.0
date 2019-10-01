@@ -8,6 +8,8 @@
 #ifndef PWMDRIVER_H_
 #define PWMDRIVER_H_
 
+typedef unsigned char uint8_t;
+
 #define Origen 		40
 #define End 		820
 #define ReverseVal 3281

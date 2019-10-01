@@ -82,16 +82,16 @@ void Check_Down_Bttn(void){
 void Check_Conf_Bttn(void){
 	Dbncr(enPin5);
 	if(Dbncr_vfnRiseDec(enPin5)){
-		vfnState_Configuracion();
+		//vfnState_Configuracion();
 	}else{
 		/*No Used*/
 	}
 }
 
 void Check_Run_Bttn(void){
-	Dbncr(enPin6);
-	if(Dbncr_vfnRiseDec(enPin6)){
-		vfnState_Run();
+	Dbncr(enPin5);
+	if(Dbncr_vfnRiseDec(enPin5)){
+		//vfnState_Run();
 	}else{
 		/*No Used*/
 	}

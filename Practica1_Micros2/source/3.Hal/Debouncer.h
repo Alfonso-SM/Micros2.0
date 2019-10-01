@@ -19,7 +19,6 @@ typedef enum{
 	enPin3,
 	enPin4,
 	enPin5,
-	enPin6,
 	enTotalPins
 }tenPinConf;
 
