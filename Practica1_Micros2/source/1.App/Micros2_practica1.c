@@ -12,6 +12,8 @@ uint16 u8Seg=0;
 uint8  u8_20mS=0;
 uint8 au8Pins2Use[Pins2Use]={Clutch,Brake,Acc,Gear_Up,Gear_Dwn};
 uint8 StateMachineVal=0;
+uint8 u8FlagReg=0;
+uint8 u8Speed=0;
 
 int main(void){
 
