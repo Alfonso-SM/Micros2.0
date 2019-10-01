@@ -2,6 +2,7 @@
 #include "Micros2_practica1.h"
 #include "GPIODriver.h"
 #include "Debouncer.h"
+#include "PWMDriver.h"
 #include "Timer.h"
 
 typedef unsigned short uint16;
