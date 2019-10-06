@@ -13,33 +13,32 @@ void vfnTMR3(void);
 void vfnTMR4(void);
 
 uint8 u8DsplyOn=1;//Esto tendra un nombre para hacer el siempre jarioso
-uint8 au8CountersValues[TotalCnt]={0,1,3,1};
+uint8 au8CountersValues[TotalCnt]={0,0,0,11};
 uint8  *pu8Pointer=&au8CountersValues[0];
 
 void vfnTMR(void){
-	if(au8CountersValues[SecUniCnt]==0){
-		au8CountersValues[SecUniCnt]=MaxUniVal;
+	if(au8CountersValues[SecUniCnt]==MaxUniVal){
+		au8CountersValues[SecUniCnt]=0;
 		vfnTMR2();
 	}else{
-		au8CountersValues[SecUniCnt]--;
+		au8CountersValues[SecUniCnt]++;
 	}
 }
 
 void vfnTMR2(void){
-	if(au8CountersValues[SecDecCnt]==0){
-		au8CountersValues[SecDecCnt]=MinDecVal;
+	if(au8CountersValues[SecDecCnt]==MaxUniVal){
+		au8CountersValues[SecDecCnt]=0;
 		vfnTMR3();
 	}else{
-		au8CountersValues[SecDecCnt]--;
+		au8CountersValues[SecDecCnt]++;
 	}
 }
 
 void vfnTMR3(void){
-	if(au8CountersValues[MinUniCnt]==0){
-		au8CountersValues[MinUniCnt]=MaxUniVal;
-		vfnTMR4();
+	if(au8CountersValues[MinUniCnt]==MaxUniVal){
+		au8CountersValues[MinUniCnt]=0;
 	}else{
-		au8CountersValues[MinUniCnt]--;
+		au8CountersValues[MinUniCnt]++;
 	}
 }
 
@@ -61,6 +60,10 @@ void Timer_vfnIdle(void){
 		pu8Pointer++;
 	}
 	Shift_vfnDecode(pu8Pointer,&u8DsplyOn);
+}
+
+void Timer_vfn4DsplyVal(uint8 u8GearSelec){
+	au8CountersValues[3]=u8GearSelec;
 }
 
 void Timer_vfnShiftLeft(void){

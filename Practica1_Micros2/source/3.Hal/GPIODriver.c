@@ -68,7 +68,7 @@ void GPIO_vfnShiftDispl(uint8 *u8DispFlag, uint8 *u8DispVal){
 		GPIOC->PSOR|=*u8DispVal;
 		GPIOC->PSOR|=(TurnOffDisplays<<enDis1);	//El 15 apaga los leds y luego prende el indicado
 		GPIOC->PCOR|=((*u8DispFlag)<<enDis1);
-		if(*u8DispFlag==Display3On){
+		if(*u8DispFlag==Display4On){
 			GPIOC->PSOR|=(1<<enDP);
 		}else{
 			GPIOC->PCOR|=(1<<enDP);
@@ -82,7 +82,7 @@ void GPIO_vfnSetVal(uint8 *u8DispVal){
 void GPIO_vfnSetDisplay(uint8 *u8DispFlag){
 	GPIOC->PSOR|=(TurnOffDisplays<<enDis1);	//El 15 apaga los leds y luego prende el indicado
 	GPIOC->PCOR|=((*u8DispFlag)<<enDis1);
-	if(*u8DispFlag==Display3On){
+	if(*u8DispFlag==Display4On){
 		GPIOC->PSOR|=(1<<enDP);
 	}else{
 		GPIOC->PCOR|=(1<<enDP);

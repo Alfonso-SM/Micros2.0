@@ -25,8 +25,13 @@ int main(void){
 		vfnWhile();
 		u8Seg++;
 		u8_20mS++;
+		if(u8Seg==OneSeg){
+			vfnTMR();
+		}else{
+			/*Nothing to do*/
+		}
 		if (StateMachineVal==idle){
-			Timer_vfnIdle();
+			//Timer_vfnIdle();
 			if (u8_20mS==TriggerBttn){
 				u8_20mS=0;
 				/*Checar Pines*/
@@ -65,6 +70,7 @@ int main(void){
 		}else{
 			/*No used*/
 		}
+		Timer_vfnIdle();
 	}
 	return 0;
 }

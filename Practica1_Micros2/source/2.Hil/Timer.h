@@ -25,6 +25,7 @@ enum{
 };
 void vfnTMR(void);
 void Timer_vfnIdle(void);
+void Timer_vfn4DsplyVal(uint8 u8GearSelec);
 void Timer_vfnShiftLeft(void);
 void Timer_vfnShiftRight(void);
 void Timer_vfnShiftUp(void);

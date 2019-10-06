@@ -20,6 +20,9 @@ typedef unsigned char uint8;
 #define Eight 	0x7F
 #define Nine 	0x67
 #define Zero 	0x3F
+#define GearN	0x54
+#define GearR	0x50
+#define GearP	0x73
 #define Error 	0x76
 
 
