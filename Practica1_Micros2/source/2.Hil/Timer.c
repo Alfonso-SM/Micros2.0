@@ -12,8 +12,13 @@ void vfnTMR2(void);
 void vfnTMR3(void);
 void vfnTMR4(void);
 
+
+void vfnTMRLess2(void);
+void vfnTMRLess3(void);
+void vfnTMRLess4(void);
+
 uint8 u8DsplyOn=1;//Esto tendra un nombre para hacer el siempre jarioso
-uint8 au8CountersValues[TotalCnt]={0,0,0,11};
+uint8 au8CountersValues[TotalCnt]={0,0,0,10};
 uint8  *pu8Pointer=&au8CountersValues[0];
 
 void vfnTMR(void){
@@ -43,6 +48,41 @@ void vfnTMR3(void){
 }
 
 void vfnTMR4(void){
+	if(au8CountersValues[MinDecCnt]==0){
+		au8CountersValues[MinDecCnt]=0;
+	}else{
+		au8CountersValues[MinDecCnt]--;
+	}
+}
+
+
+void vfnTMRLess(void){
+	if(au8CountersValues[SecUniCnt]==0){
+		au8CountersValues[SecUniCnt]=MaxUniVal;
+		vfnTMRLess2();
+	}else{
+		au8CountersValues[SecUniCnt]--;
+	}
+}
+
+void vfnTMRLess2(void){
+	if(au8CountersValues[SecDecCnt]==0){
+		au8CountersValues[SecDecCnt]=MaxUniVal;
+		vfnTMRLess3();
+	}else{
+		au8CountersValues[SecDecCnt]--;
+	}
+}
+
+void vfnTMRLess3(void){
+	if(au8CountersValues[MinUniCnt]==0){
+		au8CountersValues[MinUniCnt]=MaxUniVal;
+	}else{
+		au8CountersValues[MinUniCnt]--;
+	}
+}
+
+void vfnTMRLess4(void){
 	if(au8CountersValues[MinDecCnt]==0){
 		au8CountersValues[MinDecCnt]=0;
 	}else{
