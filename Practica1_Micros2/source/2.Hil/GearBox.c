@@ -86,7 +86,7 @@ void Gear_vfnGearDrive(void){
 				u8Speed--;
 			}
 		}
-		if((u8Index>4)&&(u8Speed>50)){
+		if((u8Index>=4)&&(u8Speed>50)){
 			u8Index=enFourthGear;
 		}
 		PWM_Acc_or_Dec(u8Speed);
@@ -140,7 +140,9 @@ void Gear_vfCheckBttns4Drive(void){
 		if (Dbncr_u8fnCheckStableState(enClutch)){
 			if(u8Index!=enReverseGear){
 				if(Dbncr_u8fnRisingEdge(enGearUp)){
+					if((u8Index!=4)/*&&(u8Index<5)*/){
 					u8Index++;
+					}
 				}else{
 					if(Dbncr_u8fnRisingEdge(enGearDwn)){
 						if(u8Index>1){
