@@ -42,6 +42,12 @@ void Shift_vfnDecode(uint8 *u8DeciVal,uint8 *u8SlcDsply){
 	case 9:
 		u8DecoVal=Nine;
 		break;
+	case 10:
+		u8DecoVal=GearP;
+		break;
+	case 11:
+		u8DecoVal=GearR;
+		break;
 	default:
 		u8DecoVal=Error;
 		break;

@@ -51,7 +51,7 @@ void GPIO_vfnDriverInit (void){
 void GPIO_vfnDriverInptsInit(uint8 *PinVal,uint8 SizeOfList){
 	while(SizeOfList!=0){
 		PORTE->PCR[*PinVal]=ActGPIO_PullDown;
-		DbncrInit(*PinVal);
+		Dbncr_vfnInit(*PinVal);
 		PinVal++;
 		SizeOfList--;
 	}
@@ -59,7 +59,7 @@ void GPIO_vfnDriverInptsInit(uint8 *PinVal,uint8 SizeOfList){
 
 uint8 GPIO_u8fnReadPin(uint8 Pin2Read){
 	uint8 PinVal=0;
-	PinVal=((GPIOE->PDIR)>>Pin2Read);
+	PinVal=((GPIOE->PDIR)>>Pin2Read)&1;
 	return PinVal;
 }
 
@@ -68,7 +68,7 @@ void GPIO_vfnShiftDispl(uint8 *u8DispFlag, uint8 *u8DispVal){
 		GPIOC->PSOR|=*u8DispVal;
 		GPIOC->PSOR|=(TurnOffDisplays<<enDis1);	//El 15 apaga los leds y luego prende el indicado
 		GPIOC->PCOR|=((*u8DispFlag)<<enDis1);
-		if(*u8DispFlag==Display3On){
+		if(*u8DispFlag==Display4On){
 			GPIOC->PSOR|=(1<<enDP);
 		}else{
 			GPIOC->PCOR|=(1<<enDP);
@@ -82,7 +82,7 @@ void GPIO_vfnSetVal(uint8 *u8DispVal){
 void GPIO_vfnSetDisplay(uint8 *u8DispFlag){
 	GPIOC->PSOR|=(TurnOffDisplays<<enDis1);	//El 15 apaga los leds y luego prende el indicado
 	GPIOC->PCOR|=((*u8DispFlag)<<enDis1);
-	if(*u8DispFlag==Display3On){
+	if(*u8DispFlag==Display4On){
 		GPIOC->PSOR|=(1<<enDP);
 	}else{
 		GPIOC->PCOR|=(1<<enDP);
@@ -99,5 +99,20 @@ void GPIO_vfnToggleLEd(void){
 	GPIOD->PTOR=Blue;
 }
 
+void GPIO_vfnDrive(void){
+	PORTB->PCR[0]|=ActGPIO;
+	PORTB->PCR[1]&=~ActGPIO;
+	GPIOB->PCOR=2;
+	GPIOB->PDDR=1;
+	GPIOB->PSOR=1;
+}
+
+void GPIO_vfnReverse(void){
+	PORTB->PCR[1]|=ActGPIO;
+	PORTB->PCR[0]&=~ActGPIO;
+	GPIOB->PCOR=1;
+	GPIOB->PDDR=2;
+	GPIOB->PSOR=2;
+}
 
 
