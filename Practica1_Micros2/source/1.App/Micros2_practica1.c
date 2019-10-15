@@ -4,6 +4,7 @@
 #include "GearBox.h"
 #include "PWMDriver.h"
 #include "Timer.h"
+#include "UART_DriverInt.h"
 
 
 
@@ -19,6 +20,7 @@ int main(void){
 	GPIO_vfnDriverInptsInit(&au8Pins2Use[0],sizeof(au8Pins2Use));
 	PWM_vfnDriverInit ();
 	Gear_InitSt();
+	UART0_vfnCallbackReg(UART0_Callback);
 
 	while(1){
 		vfnWhile();
@@ -59,6 +61,9 @@ int main(void){
 		Timer_vfnIdle();
 	}
 	return 0;
+}
+void UART0_Callback(uint_8 UARTVal){
+	//interrupcion
 }
 
 
