@@ -23,9 +23,9 @@ void UART_DriverInt(void){
 	NVIC->ISER[0]|=(1<<UART0_IRQn);
 	UART0->C4|=UART0_C4_OSR(15);
 
-	SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;
-	PORTD->PCR[6]=PORT_PCR_MUX(3); //RX
-	PORTD->PCR[7]=PORT_PCR_MUX(3); //TX
+	SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;
+	PORTA->PCR[1]=PORT_PCR_MUX(2); //RX
+	PORTA->PCR[2]=PORT_PCR_MUX(2); //TX
 	UART0->C2|=UART_C2_TE_MASK;
 	UART0->C2|=UART_C2_RE_MASK;
 
@@ -40,15 +40,7 @@ uint_8 UART_bfnSend (uint_8 bTxData){
 	return ERROR;
 	}
 }
-uint_8 UART_bfnRead (uint_8 *bpRxData){
-	if(UART0->S1&UART_S1_RDRF_MASK){
-		*bpRxData=UART0->D;
-		return SUCCESS;
-	}
-	else{
-	return ERROR;
-	}
-}
+
 void(*fnCallBack)(uint_8 UART0_Val);
 void UART0_vfnCallbackReg(void (*fnCall)(uint_8 )){
 	fnCallBack=fnCall;

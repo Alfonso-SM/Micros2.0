@@ -33,6 +33,11 @@ void Gear_InitSt(void);
 void Gear_vfnParkGear(void);
 void Gear_vfCheckBttns4Parking(void);
 void Gear_vfCheckBttns4Drive(void);
+void Gear_vfnBrake(void);
+uint8 Setvel(uint8 x);
+void printvel(void);
+void onlyacc(void);
+uint8 check(void);
 
 
 #endif /* 2_HIL_GEARBOX_H_ */

@@ -20,9 +20,10 @@ typedef unsigned char uint8_t;
 
 
 void PWM_vfnDriverInit (void);
+void PWM_vfnDriverInitServo(void);
 uint8_t PWM_bfnAngleAdjustment (uint8_t bNewAngle);
 uint8_t PWM_bInitialPosition (void);
-void PWM_Acc_or_Dec(uint8_t u8Km);
+void PWM_Acc_or_Dec(uint8_t u8Km,uint8_t gober);
 void PWM_vfnLowBrake(uint8_t *u8Gears);
 
 #endif /* PWMDRIVER_H_ */
