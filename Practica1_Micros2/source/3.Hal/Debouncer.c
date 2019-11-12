@@ -1,6 +1,5 @@
 #include "Debouncer.h"
 #include "GPIODriver.h"
-#include "Timer.h"
 #include "Micros2_practica1.h"
 
 uint_8 u8Index;
