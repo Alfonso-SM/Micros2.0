@@ -30,8 +30,22 @@ static uint16_t u16ModVal=0;
 		//---Initialization oPWM---
 		SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;										//PortD Activation
 		PORTD->PCR[0]|=PORT_PCR_MUX(4);
-		//PORTD->PCR[1]|=PORT_PCR_MUX(4);
+		PORTD->PCR[1]|=PORT_PCR_MUX(4);
 	}
+	void PWM_vfnDriverInitServo (void){
+			SIM->SOPT2=(1<<SIM_SOPT2_TPMSRC_SHIFT);
+			SIM->SCGC6 =SIM_SCGC6_TPM0_MASK;
+			TPM0->SC=TPM_SC_CPWMS_MASK;
+			TPM0->SC|= 0b110;
+			TPM0->SC|=(1<<TPM_SC_CMOD_SHIFT);
+			TPM0->MOD =3280;                 //Configuracion de 20mS
+			TPM0->CONTROLS[2].CnSC =0x28;    //High-true pulses
+			TPM0->CONTROLS[2].CnV=20; //0° del servo
+			TPM0->CONF=TPM_CONF_DBGMODE_MASK;
+			//SIM->SCGC5=SIM_SCGC5_PORTD_MASK;
+			PORTD->PCR[2]=PORT_PCR_MUX(4);
+			//120° 307
+		}
 
 	uint8_t PWM_bInitialPosition (void){
 	//Move gauge to 0°
@@ -45,9 +59,23 @@ static uint16_t u16ModVal=0;
 	}
 
 
-	void PWM_Acc_or_Dec(uint8_t u8Km){
-		u16ModVal=u8Km*55;
+	void PWM_Acc_or_Dec(uint8_t u8Km,uint8_t gober){
+		uint16_t mul=0;
+		//motor
+		u16ModVal=u8Km*27;
 		TPM0->CONTROLS[0].CnV=u16ModVal;
+		//servo
+		mul=3;
+		u16ModVal=u8Km*mul;
+		u16ModVal+=40;
+		if(u16ModVal<=40){
+			TPM0->CONTROLS[1].CnV=40;
+		}else if(u8Km==250){
+			TPM0->CONTROLS[1].CnV=820;
+		}
+		else{
+			TPM0->CONTROLS[1].CnV=u16ModVal;
+		}
 	}
 
 

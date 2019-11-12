@@ -10,26 +10,82 @@
 #include "Debouncer.h"
 #include "Timer.h"
 #include "PWMDriver.h"
+#include "UART_DriverInt.h"
+#include "GPIODriver.h"
+
 
 extern uint16 u8Seg;
-uint8 u8Speed=0;
-uint8 a[6][3]={
+uint16 u8Speed=0;
+static uint8 y=0;
+uint16 vel;
+uint16 vel1;
+uint16 a[6][3]={
 		{10,0,0},
-		{1,30,0},
-		{2,60,30},
-		{3,90,60},
-		{4,120,90},
+		{1,62,0},
+		{2,124,62},
+		{3,186,124},
+		{4,250,186},
 		{11,50,0}
 };
 
 void Gear_vfnParkGear(void);
 void Gear_vfnGearDrive(void);
-void Gear_vfnBrake(void);
 void Gear_vfnFastBreak(void);
 
 tstGearInfo astGearsData[enTotalGears];
 static tenGearConf u8Index=enParkGear;
 static uint8 u8Delay=0;
+uint8 Setvel(uint8 x){
+	if(y==0){
+		UART_bfnSend(x);
+		vel=((x-48)*100);
+		y++;
+	}else if (y==1){
+		UART_bfnSend(x);
+		vel+=((x-48)*10);
+		y++;
+	}else{
+		UART_bfnSend(x);
+		vel+=(x-48);
+		y=0;
+		vel1=vel;
+		vel=vel/4;
+		for (uint8 i=1;i<5;i++){
+			for(uint8 j=1;j<3;j++){
+				if(y==0){
+					a[i][j]=vel;
+					y++;
+				}else if(y==1){
+					a[i][j]=0;
+					y++;
+				}else if(y==2){
+					a[i][j]=vel*2;
+					y++;
+				}else if(y==3){
+					a[i][j]=vel;
+					y++;
+				}else if(y==4){
+					a[i][j]=vel*3;
+					y++;
+				}else if(y==5){
+					a[i][j]=vel*2;
+					y++;
+				}
+				else if(y==6){
+					a[i][j]=vel1;
+					y++;
+				}else if(y==7){
+					a[i][j]=vel*3;
+					y=0;
+					Gear_InitSt();
+				}
+
+			}
+		}
+		return SUCCESS;
+	}
+	return ERROR;
+}
 
 void Gear_InitSt(void){
 	for (uint8 i=0;i<6;i++){
@@ -86,7 +142,7 @@ void Gear_vfnGearDrive(void){
 				u8Speed--;
 			}
 		}
-		PWM_Acc_or_Dec(u8Speed);
+	PWM_Acc_or_Dec(u8Speed,astGearsData[4].u8MaxVal);
 		if(u8Delay==3){
 			u8Delay=0;
 		}
@@ -105,7 +161,7 @@ void Gear_vfnBrake(void){
 			u8Index=enParkGear;
 		}
 	}
-	PWM_Acc_or_Dec(u8Speed);
+	PWM_Acc_or_Dec(u8Speed,astGearsData[4].u8MaxVal);
 }
 
 void Gear_vfnFastBreak(void){
@@ -164,4 +220,59 @@ void Gear_vfCheckBttns4Drive(void){
 			}
 		}
 	}
+}
+
+void printvel(void){
+	uint8 vel=0;
+	uint8 print[18]=Velocidad;
+				for(int i=0;i<18;i++){
+					while(UART_bfnSend(print[i])==ERROR){
+						}
+					}
+		vel=(u8Speed/100)+48;
+		while(UART_bfnSend(vel)==ERROR){
+
+		}
+
+
+		vel=((u8Speed%100)/10)+48;
+		while(UART_bfnSend(vel)==ERROR){
+										}
+		vel=((u8Speed%10))+48;
+				while(UART_bfnSend(vel)==ERROR){
+												}
+
+
+}
+void onlyacc(void){
+	if(u8Speed==0||u8Speed>=astGearsData[u8Index].u8MaxVal){
+		if(u8Index<4){
+		GPIO_vfnDrive();
+		u8Index++;
+		}
+	}
+	Timer_vfn4DsplyVal(astGearsData[u8Index].u8GearName);
+	if((u8Speed<astGearsData[u8Index].u8MaxVal)&&(u8Speed>=astGearsData[u8Index].u8MinVal-10)){
+		vfnTMR();
+		u8Speed++;
+	}else{
+		if(u8Speed<astGearsData[u8Index].u8MinVal-10){
+			if(u8Delay==3){
+				vfnTMR();
+				u8Speed++;
+			}
+		}
+	}
+	PWM_Acc_or_Dec(u8Speed,astGearsData[4].u8MaxVal);
+}
+uint8 check(void){
+	if(u8Speed!=0){
+		return ERROR;
+	}
+	else{
+		u8Index=enParkGear;
+		return SUCCESS;
+	}
+
+
 }
