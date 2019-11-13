@@ -10,10 +10,31 @@
 
 #define PIT_IRQ   PIT_DriverIRQHandler
 
-   void PIT_vfnDriverInit(void);
-   void PIT_vfnTimerEnable(void);
-   void PIT_vfnTimerDisable(void);
-   void PIT_IRQ(void);
+typedef unsigned char uint8;
+typedef unsigned short uint16;
+
+#define bool _Bool
+
+	typedef enum{
+		enPit0 = 0,
+		enPit1,
+		enTotalPit
+	}tenPits;
+
+	typedef struct{
+		void (*u8Period_ms)(uint8, uint16);
+		bool bInterup;
+		void  (*bEnablePit)(uint8);
+		bool bPitState;
+	}tstInitPit;
+
+	void PIT_vfnSetPit(uint8 u8Channel, uint16 u16Period_ms, bool bInterruption);
+	void PIT_vfnStartPit(uint8 u8Channel, bool bSet);
+	void PIT_vfnCallBackReg(void (*vfnCallBack)(void));
+	void PIT_vfnCallBack (void);
+	void PIT_IRQ(void);
+
+
 
 
 #endif /* 1_APP_PIT_H_ */

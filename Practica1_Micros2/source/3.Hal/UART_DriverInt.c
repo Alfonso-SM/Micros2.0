@@ -42,6 +42,7 @@ uint_8 UART_bfnSend (uint_8 bTxData){
 }
 
 void(*fnCallBack)(uint_8 UART0_Val);
+
 void UART0_vfnCallbackReg(void (*fnCall)(uint_8 )){
 	fnCallBack=fnCall;
 }
