@@ -30,8 +30,6 @@ typedef unsigned short uint16;
 
 	void PIT_vfnSetPit(uint8 u8Channel, uint16 u16Period_ms, bool bInterruption);
 	void PIT_vfnStartPit(uint8 u8Channel, bool bSet);
-	void PIT_vfnCallBackReg(void (*vfnCallBack)(void));
-	void PIT_vfnCallBack (void);
 	void PIT_IRQ(void);
 
 

@@ -8,8 +8,8 @@
 
 
 uint8 au8Pins2Use[Pins2Use]={enPin0,enPin1,enPin2,enPin3,enPin4};
-uint8 StateMachineVal=0;
-
+enClockStates u8StateMachineVal=enClock;
+static uint8 u8StatusFlag = 0;
 int main(void)
 {
 
@@ -18,8 +18,6 @@ int main(void)
 	GPIOD->PDDR |= (1<<2);
 	PORTD->PCR[3] |= PORT_PCR_MUX(1);
 	GPIOD->PDDR |= (1<<3);
-
-	PIT_vfnCallBackReg(PIT_vfnCallBack);
 
 	PIT_vfnSetPit(0, 1000, 1);
 	PIT_vfnSetPit(1, 20, 1);
@@ -43,15 +41,20 @@ void UART0_Callback(uint_8 UARTVal)
 
 }
 
-void PIT_vfnCallBack (void)
+void AddClock(void)
 {
-	if (PIT->CHANNEL[0].TFLG & PIT_TFLG_TIF_MASK){
-		PIT->CHANNEL[0].TFLG |= PIT_TFLG_TIF_MASK;
-		GPIOD->PTOR |= 1<<2;
+//	Clock_vfnClock();
+	if(u8StatusFlag == ChronoSet)
+	{
+//		Chrono_vfnClock();
 	}
-	if (PIT->CHANNEL[1].TFLG & PIT_TFLG_TIF_MASK){
-		PIT->CHANNEL[1].TFLG |= PIT_TFLG_TIF_MASK;
-		GPIOD->PTOR |= 1<<3;
+	if(u8StatusFlag == AlarmSet)
+	{
+//		Alarm_vfnClock();
+	}
+	if(u8StatusFlag == TimerSet)
+	{
+//		Timer_vfnClock();
 	}
 }
 

@@ -11,6 +11,9 @@
 typedef unsigned short uint16;
 
 #define Pins2Use 		5
+#define ChronoSet		(1<<0)
+#define AlarmSet		(1<<1)
+#define TimerSet		(1<<2)
 typedef enum{
 	enPin0=20,
 	enPin1,
@@ -19,11 +22,14 @@ typedef enum{
 	enPin4=29,
 }enPinsNum;
 
-void vfnParkState(void);
-void vfnDriveState(void);
-void vfnReverseState(void);
-void vfnWhile(void);
-void Stopmotor(void);
+typedef enum{
+	enClock = 0,
+	enChronometer,
+	enAlarm,
+	enTimer
+}enClockStates;
+
+void AddClock(void);
 
 
 #endif /* 1_APP_MICROS2_PRACTICA1_H_ */

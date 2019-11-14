@@ -8,8 +8,6 @@ void Pit_vfnSetTime(uint8 u8channel, uint16 Time_in_ms);
 void PIT_vfnTimerEnable(uint8 u8Channel);
 void PIT_vfnTimerDisable(uint8 u8Channel);
 
-void (*PIT_Handler)(void);
-
 static _Bool bSetup=0;
 
 void PIT_vfnSetPit( uint8 u8Channel, uint16 u16Period_ms, bool bInterruption )
@@ -61,11 +59,14 @@ void PIT_vfnStartPit(uint8 u8Channel, bool bSet)
 
 }
 
-void PIT_vfnCallBackReg(void (*vfnCallBack)(void))
-{
-	PIT_Handler = vfnCallBack;
-}
-
 void PIT_IRQ(void){
-	(*PIT_Handler)();
+	if (PIT->CHANNEL[0].TFLG & PIT_TFLG_TIF_MASK)
+	{
+		PIT->CHANNEL[0].TFLG |= PIT_TFLG_TIF_MASK;
+		AddClock();
+	}
+	if (PIT->CHANNEL[1].TFLG & PIT_TFLG_TIF_MASK)
+	{
+		PIT->CHANNEL[1].TFLG |= PIT_TFLG_TIF_MASK;
+	}
 }
