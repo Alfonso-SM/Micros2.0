@@ -3,13 +3,16 @@
 #include "GPIODriver.h"
 #include "UART_DriverInt.h"
 #include "PIT.h"
+#include "PWMDriver.h"
+#include "Watch.h"
 #include "MKL25Z4.h"
 
 
 
 uint8 au8Pins2Use[Pins2Use]={enPin0,enPin1,enPin2,enPin3,enPin4};
 enClockStates u8StateMachineVal=enClock;
-static uint8 u8StatusFlag = 0;
+static uint8_t u8StatusFlag = 0;
+
 int main(void)
 {
 
@@ -27,6 +30,7 @@ int main(void)
 	GPIO_vfnDriverInit();
 	GPIO_vfnDriverInptsInit(&au8Pins2Use[0],sizeof(au8Pins2Use));
 	UART_DriverInt();
+	PWM_vfnDriverInit ();
 
 
 	while(1)
@@ -36,26 +40,34 @@ int main(void)
 
 	return 0;
 }
+
 void UART0_Callback(uint_8 UARTVal)
 {
-
+	if(UARTVal==AlarmOn && UARTVal!=AlarmOff){
+		PWM_bAlarm ();
+	}else if(UARTVal==TimerOn && UARTVal!=TimerOff){
+		PWM_bTimer();
+	}else if(UARTVal==TimerOff || UARTVal==AlarmOff){
+		PWM_bOff();
+	}
 }
 
 void AddClock(void)
 {
-//	Clock_vfnClock();
+	Clock_vfnClock();
 	if(u8StatusFlag == ChronoSet)
 	{
-//		Chrono_vfnClock();
+		Chrono_vfnClock();
 	}
 	if(u8StatusFlag == AlarmSet)
 	{
-//		Alarm_vfnClock();
+		Alarm_vfnClock();
 	}
 	if(u8StatusFlag == TimerSet)
 	{
-//		Timer_vfnClock();
+		Timer_vfnClock();
 	}
 }
+
 
 
