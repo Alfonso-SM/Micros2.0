@@ -32,6 +32,9 @@ void Timer_vfnClock(void);
 
 void vfMin_Hour(void);
 
+void Clock_vfnMasterClock (void);
+
+
 
 
 #endif /* 2_HIL_WATCH_H_ */

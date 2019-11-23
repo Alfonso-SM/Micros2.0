@@ -6,6 +6,7 @@
 #include "PWMDriver.h"
 #include "Watch.h"
 #include "MKL25Z4.h"
+#include "I2CDrive.h"
 
 
 
@@ -31,7 +32,9 @@ int main(void)
 	GPIO_vfnDriverInptsInit(&au8Pins2Use[0],sizeof(au8Pins2Use));
 	UART_DriverInt();
 	PWM_vfnDriverInit ();
+	I2C_vfnDriverInit();
 
+	Clock_vfnMasterClock();
 
 	while(1)
 	{
