@@ -5,9 +5,9 @@
 #include "PIT.h"
 #include "PWMDriver.h"
 #include "Watch.h"
+#include "Chrono.h"
 #include "MKL25Z4.h"
 #include "I2CDrive.h"
-
 
 
 uint8 au8Pins2Use[Pins2Use]={enPin0,enPin1,enPin2,enPin3,enPin4};
@@ -17,6 +17,8 @@ static uint8_t u8StatusFlag = 0;
 int main(void)
 {
 
+	 void (*array[]) (void) = {Clock_vfnMasterClock, Chrono_vfnInit};
+
 	SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
 	PORTD->PCR[2] |= PORT_PCR_MUX(1);
 	GPIOD->PDDR |= (1<<2);
@@ -25,19 +27,22 @@ int main(void)
 
 	PIT_vfnSetPit(0, 1000, 1);
 	PIT_vfnSetPit(1, 20, 1);
-	PIT_vfnStartPit(0, 1);
-	PIT_vfnStartPit(1, 1);
 	UART0_vfnCallbackReg(UART0_Callback);
 	GPIO_vfnDriverInit();
 	GPIO_vfnDriverInptsInit(&au8Pins2Use[0],sizeof(au8Pins2Use));
 	UART_DriverInt();
 	PWM_vfnDriverInit ();
 	I2C_vfnDriverInit();
+	Clock_vfnInit();
+	PIT_vfnStartPit(0, 1);
+	PIT_vfnStartPit(1, 1);
 
-	Clock_vfnMasterClock();
+	u8StatusFlag = ChronoSet;
+	u8StateMachineVal = enChronometer;
 
 	while(1)
 	{
+		array[u8StateMachineVal]();
 
 	}
 
@@ -57,20 +62,15 @@ void UART0_Callback(uint_8 UARTVal)
 
 void AddClock(void)
 {
-	Clock_vfnClock();
 	if(u8StatusFlag == ChronoSet)
 	{
 		Chrono_vfnClock();
 	}
-	if(u8StatusFlag == AlarmSet)
-	{
-		Alarm_vfnClock();
-	}
-	if(u8StatusFlag == TimerSet)
-	{
-		Timer_vfnClock();
-	}
+
 }
 
-
+void MasterClock(void)
+{
+	Clock_vfnClock();
+}
 

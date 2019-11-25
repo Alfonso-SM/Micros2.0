@@ -13,6 +13,7 @@
 #define SSD1306_LCDHEIGHT			 32
 
 typedef short int16_t;
+typedef unsigned char uint8_t;
 
 enum{
 	enAddressByte = 0,

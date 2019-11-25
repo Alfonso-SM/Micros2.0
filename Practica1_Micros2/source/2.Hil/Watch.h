@@ -20,11 +20,22 @@
 #define TimerOn			'T'
 #define TimerOff		'D'
 
+typedef enum{
+	enIdle = 0,
+	enSet_Seg,
+	enSet_Min,
+	enSet_Hrs,
+	enSet_Day,
+	enSet_Month,
+	enSet_Year,
+	enSet_Timer,
+	enSet_Chrono,
+	enConf
+}tenClockStates;
+
 void AddClock(void);
 
 void Clock_vfnClock(void);
-
-void Chrono_vfnClock(void);
 
 void Alarm_vfnClock(void);
 
@@ -34,6 +45,7 @@ void vfMin_Hour(void);
 
 void Clock_vfnMasterClock (void);
 
+void Clock_vfnInit(void);
 
 
 

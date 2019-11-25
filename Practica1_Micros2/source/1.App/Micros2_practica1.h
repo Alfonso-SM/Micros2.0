@@ -29,6 +29,7 @@ typedef enum{
 	enTimer
 }enClockStates;
 
+void MasterClock(void);
 void AddClock(void);
 
 

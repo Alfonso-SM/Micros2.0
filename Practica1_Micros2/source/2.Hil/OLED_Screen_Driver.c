@@ -174,6 +174,8 @@ uint8_t SSD1306_Begin(void){
 void SSD1306_Display(void)
 {
 
+	au8OLED_Leght[enControlByte] = 0x00;
+
 	au8OLED_Leght[enCommandByte] = SSD1306_PAGEADDR;
 	 I2C_vfnSendData (&au8OLED_Leght[0], Message_Leght);
 	au8OLED_Leght[enCommandByte] = 0x00;								// Page start address (0 = reset)

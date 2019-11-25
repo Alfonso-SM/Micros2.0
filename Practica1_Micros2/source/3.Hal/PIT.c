@@ -1,5 +1,6 @@
 #include "MKL25Z4.h"
 #include "PIT.h"
+#include "Micros2_practica1.h"
 #include "core_cm0plus.h"
 
 tstInitPit stPitConfiguration[enTotalPit];
@@ -62,11 +63,12 @@ void PIT_vfnStartPit(uint8 u8Channel, bool bSet)
 void PIT_IRQ(void){
 	if (PIT->CHANNEL[0].TFLG & PIT_TFLG_TIF_MASK)
 	{
+		MasterClock();
 		PIT->CHANNEL[0].TFLG |= PIT_TFLG_TIF_MASK;
-		AddClock();
 	}
 	if (PIT->CHANNEL[1].TFLG & PIT_TFLG_TIF_MASK)
 	{
+		AddClock();
 		PIT->CHANNEL[1].TFLG |= PIT_TFLG_TIF_MASK;
 	}
 }
