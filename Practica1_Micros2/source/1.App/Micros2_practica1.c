@@ -8,10 +8,11 @@
 #include "Chrono.h"
 #include "MKL25Z4.h"
 #include "I2CDrive.h"
+#include "Debouncer.h"
 
 
-uint8 au8Pins2Use[Pins2Use]={enPin0,enPin1,enPin2,enPin3,enPin4};
-enClockStates u8StateMachineVal=enClock;
+uint8 au8Pins2Use[Pins2Use]={enStart,enStop,enMode,enPic};
+enClockStates u8StateMachineVal = enClock;
 static uint8_t u8StatusFlag = 0;
 
 int main(void)
@@ -37,8 +38,7 @@ int main(void)
 	PIT_vfnStartPit(0, 1);
 	PIT_vfnStartPit(1, 1);
 
-	u8StatusFlag = ChronoSet;
-	u8StateMachineVal = enChronometer;
+//	u8StateMachineVal = enChronometer;
 
 	while(1)
 	{
@@ -62,6 +62,9 @@ void UART0_Callback(uint_8 UARTVal)
 
 void AddClock(void)
 {
+	Dbncr_vfnDbncr(enModeBttn);
+	Dbncr_vfnDbncr(enStartBttn);
+	Dbncr_vfnDbncr(enStopBttn);
 	if(u8StatusFlag == ChronoSet)
 	{
 		Chrono_vfnClock();
@@ -72,5 +75,19 @@ void AddClock(void)
 void MasterClock(void)
 {
 	Clock_vfnClock();
+}
+
+void ChangeScreen (void)
+{
+	u8StateMachineVal++;
+	if(u8StateMachineVal == enAlarm )
+	{
+		u8StateMachineVal = enClock;
+	}
+}
+
+void ChronometerEnable ( void )
+{
+	u8StatusFlag |= ChronoSet;
 }
 

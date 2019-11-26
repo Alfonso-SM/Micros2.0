@@ -7,34 +7,33 @@
 
 #ifndef DEBOUNCER_H_
 #define DEBOUNCER_H_
-typedef unsigned char uint_8 ;
+//typedef unsigned char uint_8 ;
 typedef unsigned long uint_32;
 
 #define LastValue 2
 #define ShootCapture 3
 
 typedef enum{
-	enClutch=0,
-	enBrake,
-	enAcc,
-	enGearUp,
-	enGearDwn,
+	enStartBttn = 0,
+	enStopBttn,
+	enModeBttn,
+	enPicBttn,
 	enTotalPins
 }tenPinInputs;
 
 typedef struct{
-	uint_8 Pin;
-	uint_8 LastStableState;
-	uint_8 u8Shots[ShootCapture];
-	uint_8 u8Cntr;
-	uint_8 u8Stablestate ;
+	unsigned char Pin;
+	unsigned char LastStableState;
+	unsigned char u8Shots[ShootCapture];
+	unsigned char u8Cntr;
+	unsigned char u8Stablestate ;
 }tstDbncrInfo;
 
 
-void Dbncr_vfnInit(uint_8 PinVal);
-void Dbncr_vfnDbncr(uint_8 u8Pin2Check);
-uint_8 Dbncr_u8fnRisingEdge(uint_8 u8Pin2Check);
-uint_8 Dbncr_u8fnCheckStableState(uint_8 u8Pin2Check);
+void Dbncr_vfnInit(unsigned char PinVal);
+void Dbncr_vfnDbncr(unsigned char u8Pin2Check);
+unsigned char Dbncr_u8fnRisingEdge(unsigned char u8Pin2Check);
+unsigned char Dbncr_u8fnCheckStableState(unsigned char u8Pin2Check);
 void Dbncr_vfCheckBttns4Parking(void);
 
 

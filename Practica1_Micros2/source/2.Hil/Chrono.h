@@ -14,6 +14,7 @@
 #define dDecVal		10
 #define dAsciiNum	48
 
+
 typedef enum{
 	enCIdle = 0,
 	enSet_CSeg,

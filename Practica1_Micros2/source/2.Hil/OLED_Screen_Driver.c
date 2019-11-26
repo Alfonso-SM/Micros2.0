@@ -433,6 +433,31 @@ void SSD1306_INVERSE(uint8_t x, uint8_t y, uint8_t x0, uint8_t y0){
 	}
 }
 
+void SSD1306_Page2Page (uint8_t p1, uint8_t p2)
+{
+	au8OLED_Leght[enControlByte] = 0x00;
+
+	au8OLED_Leght[enCommandByte] = SSD1306_PAGEADDR;
+	 I2C_vfnSendData (&au8OLED_Leght[0], Message_Leght);
+	au8OLED_Leght[enCommandByte] = p1;								// Page start address (0 = reset)
+	 I2C_vfnSendData (&au8OLED_Leght[0], Message_Leght);
+	au8OLED_Leght[enCommandByte] = p2;									// Page end address
+	 I2C_vfnSendData (&au8OLED_Leght[0], Message_Leght);
+
+	au8OLED_Leght[enCommandByte] = SSD1306_COLUMNADDR;
+	 I2C_vfnSendData (&au8OLED_Leght[0], Message_Leght);
+	au8OLED_Leght[enCommandByte] = 0x00;								// Column start address (0 = reset)
+	 I2C_vfnSendData (&au8OLED_Leght[0], Message_Leght);
+	au8OLED_Leght[enCommandByte] = SSD1306_LCDWIDTH  - 1;				// Column end address (127 = reset)
+	 I2C_vfnSendData (&au8OLED_Leght[0], Message_Leght);
+
+	for (uint16_t i = (p1 * 128); i < ((p2+1) * 128); i++){
+    // send a bunch of data in one mission
+	au8OLED_Leght[enControlByte] = SSD1306_SETSTARTLINE;
+	au8OLED_Leght[enCommandByte] = ssd1306_buffer[i];
+     I2C_vfnSendData (&au8OLED_Leght[0], Message_Leght);
+	}
+}
 
 
 

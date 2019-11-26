@@ -14,12 +14,13 @@ typedef unsigned short uint16;
 #define ChronoSet		(1<<0)
 #define AlarmSet		(1<<1)
 #define TimerSet		(1<<2)
+
+
 typedef enum{
-	enPin0=20,
-	enPin1,
-	enPin2,
-	enPin3,
-	enPin4=29,
+	enStart=20,
+	enStop,
+	enMode,
+	enPic,
 }enPinsNum;
 
 typedef enum{
@@ -31,6 +32,8 @@ typedef enum{
 
 void MasterClock(void);
 void AddClock(void);
+void ChangeScreen (void);
+void ChronometerEnable ( void );
 
 
 #endif /* 1_APP_MICROS2_PRACTICA1_H_ */

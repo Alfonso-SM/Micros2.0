@@ -39,6 +39,7 @@ void SSD1306_Print(uint8_t c);
 void SSD1306_DrawText(uint8_t x, uint8_t y, char *_text, uint8_t size);
 void SSD1306_ROMBMP(uint8_t x, uint8_t y, uint8_t *bitmap, uint8_t w, uint8_t h);
 void SSD1306_INVERSE(uint8_t x, uint8_t y, uint8_t x0, uint8_t y0);
+void SSD1306_Page2Page (uint8_t p1, uint8_t p2);
 
 static uint8_t ssd1306_buffer[] = {
 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

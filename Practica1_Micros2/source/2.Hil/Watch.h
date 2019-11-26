@@ -37,12 +37,6 @@ void AddClock(void);
 
 void Clock_vfnClock(void);
 
-void Alarm_vfnClock(void);
-
-void Timer_vfnClock(void);
-
-void vfMin_Hour(void);
-
 void Clock_vfnMasterClock (void);
 
 void Clock_vfnInit(void);

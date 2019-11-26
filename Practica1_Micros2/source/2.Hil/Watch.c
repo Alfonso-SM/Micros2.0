@@ -11,6 +11,11 @@
 
 #define NULL ((void *)0)
 
+_Bool bEnableClock = 0;
+_Bool bRefreshClock = 0;
+_Bool bBusyClock = 1;
+_Bool bOnScreenClock = 0;
+_Bool b24Hrs = 0;
 tenClockStates ClockStates = enIdle;
 uint8_t u8Seg = 50;
 uint8_t u8Min = 59;
@@ -59,8 +64,6 @@ void Clock_vfnInit(void)
 
 	SSD1306_ClearDisplay();
 
-	SSD1306_Display();
-
 	Clock_vfnDisplayMenu();
 	Clock_vfnSet_Year();
 	Clock_vfnSetMonth();
@@ -72,6 +75,7 @@ void Clock_vfnInit(void)
 
 void Clock_vfnMasterClock (void)
 {
+
 	for(; ClockStates != 0; ClockStates--)
 	{
 		Clock_ptrfn[ClockStates]();
@@ -143,11 +147,6 @@ void Clock_vfnSet_Seg(void)
 	}
 
 	SSD1306_Display();
-
-//	ClockStates = enIdle;
-
-//	Clock_ptrfn = NULL;
-
 }
 
 void Clock_vfnSet_Min(void)
@@ -159,9 +158,6 @@ void Clock_vfnSet_Min(void)
 
 	  ClockStates = enSet_Seg;
 
-//	  Clock_ptrfn = Clock_vfnSet_Seg;
-
-//	  Clock_ptrfn();
 }
 
 void Clock_vfnSet_Hrs(void)
@@ -171,11 +167,6 @@ void Clock_vfnSet_Hrs(void)
 
 	SSD1306_DrawText(105, 24, "p.m.", 1);
 
-//	  ClockStates = enSet_Min;
-
-//	  Clock_ptrfn = Clock_vfnSet_Min;
-
-//	  Clock_ptrfn();
 }
 
 void Clock_vfnSet_Day (void)
@@ -187,9 +178,6 @@ void Clock_vfnSet_Day (void)
 
 	  SSD1306_DrawText(0, 2, u8Date, 1);
 
-//	  Clock_ptrfn = Clock_vfnSet_Hrs;
-
-//	  Clock_ptrfn();
 }
 
 
@@ -305,9 +293,6 @@ void Clock_vfnSet_Year(void)
 	  u8Date[8] = u8Year % 10 + 48;
 	  u8Date[7] = u8Year / 10 + 48;
 
-//	  Clock_ptrfn = Clock_vfnSetMonth;
-
-//	  Clock_ptrfn();
 }
 
 void Clock_vfnTimerIcon(void)
