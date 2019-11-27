@@ -34,6 +34,7 @@ void MasterClock(void);
 void AddClock(void);
 void ChangeScreen (void);
 void ChronometerEnable ( void );
+void TimerEnable ( void );
 
 
 #endif /* 1_APP_MICROS2_PRACTICA1_H_ */

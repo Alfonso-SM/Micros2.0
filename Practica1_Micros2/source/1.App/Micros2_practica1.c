@@ -6,6 +6,7 @@
 #include "PWMDriver.h"
 #include "Watch.h"
 #include "Chrono.h"
+#include "Timer.h"
 #include "MKL25Z4.h"
 #include "I2CDrive.h"
 #include "Debouncer.h"
@@ -18,7 +19,7 @@ static uint8_t u8StatusFlag = 0;
 int main(void)
 {
 
-	 void (*array[]) (void) = {Clock_vfnMasterClock, Chrono_vfnInit};
+	 void (*array[]) (void) = {Clock_vfnMasterClock, Timer_vfnInit};
 
 	SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
 	PORTD->PCR[2] |= PORT_PCR_MUX(1);
@@ -39,7 +40,7 @@ int main(void)
 	PIT_vfnStartPit(1, 1);
 
 //	u8StateMachineVal = enChronometer;
-
+	u8StateMachineVal=enTimer;
 	while(1)
 	{
 		array[u8StateMachineVal]();
@@ -65,9 +66,12 @@ void AddClock(void)
 	Dbncr_vfnDbncr(enModeBttn);
 	Dbncr_vfnDbncr(enStartBttn);
 	Dbncr_vfnDbncr(enStopBttn);
+	Dbncr_vfnDbncr(enPicBttn);
 	if(u8StatusFlag == ChronoSet)
 	{
 		Chrono_vfnClock();
+	}else if(u8StatusFlag == TimerSet){
+		Timer_vfnClock();
 	}
 
 }
@@ -89,5 +93,9 @@ void ChangeScreen (void)
 void ChronometerEnable ( void )
 {
 	u8StatusFlag |= ChronoSet;
+}
+void TimerEnable ( void )
+{
+	u8StatusFlag = TimerSet;
 }
 
